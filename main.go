@@ -36,9 +36,9 @@ func main() {
 		}
 		fmt.Printf("%s\n\n", dump)
 	}
+	proxy := &httputil.ReverseProxy{Director: director}
+	proxy.Transport = &dumptransport{}
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		proxy := &httputil.ReverseProxy{Director: director}
-		proxy.Transport = &dumptransport{}
 		proxy.ServeHTTP(w, r)
 	})
 	log.Fatal(http.ListenAndServe(*listen, nil))
