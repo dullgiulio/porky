@@ -8,16 +8,19 @@ import (
 	"net/http/httputil"
 )
 
-type dumptransport struct {}
+type dumptransport struct{}
 
 func (t *dumptransport) RoundTrip(request *http.Request) (*http.Response, error) {
-    response, err := http.DefaultTransport.RoundTrip(request)
-    dump, err := httputil.DumpResponse(response, true)
-    if err != nil {
-        return nil, err
-    }
+	response, err := http.DefaultTransport.RoundTrip(request)
+	if err != nil {
+		return nil, err
+	}
+	dump, err := httputil.DumpResponse(response, true)
+	if err != nil {
+		return nil, err
+	}
 	fmt.Printf("%s\n\n", dump)
-    return response, err
+	return response, err
 }
 
 func main() {
